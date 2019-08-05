@@ -1,4 +1,4 @@
-package com.techprimers.springbatchexample1.tasklets;
+package com.reddy.springbatchexample1.tasklets;
 
 import java.util.Date;
 

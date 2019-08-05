@@ -1,6 +1,5 @@
-package com.techprimers.springbatchexample1.config;
+package com.reddy.springbatchexample1.config;
 
-import com.techprimers.springbatchexample1.model.User;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -19,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+
+import com.reddy.springbatchexample1.model.User;
 
 @Configuration
 @EnableBatchProcessing

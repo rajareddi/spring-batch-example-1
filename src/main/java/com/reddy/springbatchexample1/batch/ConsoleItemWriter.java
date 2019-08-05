@@ -1,4 +1,4 @@
-package com.techprimers.springbatchexample1.batch;
+package com.reddy.springbatchexample1.batch;
 
 import java.util.List;
 

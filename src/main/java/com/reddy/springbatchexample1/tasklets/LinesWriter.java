@@ -1,4 +1,4 @@
-package com.techprimers.springbatchexample1.tasklets;
+package com.reddy.springbatchexample1.tasklets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +11,8 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 
-import com.techprimers.springbatchexample1.model.Line;
-import com.techprimers.springbatchexample1.utils.FileUtils;
+import com.reddy.springbatchexample.utils.FileUtils;
+import com.reddy.springbatchexample1.model.Line;
 
 import java.util.List;
 
