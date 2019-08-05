@@ -1,4 +1,4 @@
-package com.techprimers.springbatchexample1.config;
+package com.reddy.springbatchexample1.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -19,10 +19,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.techprimers.springbatchexample1.tasklets.LineReaderTwo;
-import com.techprimers.springbatchexample1.tasklets.LinesProcessor;
-import com.techprimers.springbatchexample1.tasklets.LinesReader;
-import com.techprimers.springbatchexample1.tasklets.LinesWriter;
+import com.reddy.springbatchexample1.tasklets.LineReaderTwo;
+import com.reddy.springbatchexample1.tasklets.LinesProcessor;
+import com.reddy.springbatchexample1.tasklets.LinesReader;
+import com.reddy.springbatchexample1.tasklets.LinesWriter;
 
 @Configuration
 @EnableBatchProcessing

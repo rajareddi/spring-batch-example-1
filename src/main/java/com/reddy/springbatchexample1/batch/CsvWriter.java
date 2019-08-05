@@ -1,4 +1,4 @@
-package com.techprimers.springbatchexample1.batch;
+package com.reddy.springbatchexample1.batch;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
-import com.techprimers.springbatchexample1.model.User;
+import com.reddy.springbatchexample1.model.User;
 
 public class CsvWriter implements ItemWriter<User> {
 

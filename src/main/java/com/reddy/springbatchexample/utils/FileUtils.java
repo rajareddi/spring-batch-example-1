@@ -1,8 +1,8 @@
-package com.techprimers.springbatchexample1.utils;
+package com.reddy.springbatchexample.utils;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.techprimers.springbatchexample1.model.Line;
+import com.reddy.springbatchexample1.model.Line;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

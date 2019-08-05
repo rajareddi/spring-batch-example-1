@@ -1,4 +1,4 @@
-package com.techprimers.springbatchexample1.controller;
+package com.reddy.springbatchexample1.controller;
 
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
