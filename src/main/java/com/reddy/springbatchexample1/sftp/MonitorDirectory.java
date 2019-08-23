@@ -1,4 +1,4 @@
-package com.reddy.springbatchexample.sftp;
+package com.reddy.springbatchexample1.sftp;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;

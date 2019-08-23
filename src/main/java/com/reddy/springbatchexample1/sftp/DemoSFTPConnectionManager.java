@@ -1,4 +1,4 @@
-package com.reddy.springbatchexample.sftp;
+package com.reddy.springbatchexample1.sftp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

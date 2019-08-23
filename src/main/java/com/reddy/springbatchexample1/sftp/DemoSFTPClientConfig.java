@@ -1,4 +1,4 @@
-package com.reddy.springbatchexample.sftp;
+package com.reddy.springbatchexample1.sftp;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("deprecation")
 @Slf4j
 @Component
-@ConfigurationProperties("sftp")
+@ConfigurationProperties("sftp.inbound")
 @Setter @Getter 
 @Validated
 public class DemoSFTPClientConfig {
@@ -55,17 +55,6 @@ public class DemoSFTPClientConfig {
 	private String ignored_file_ext;
 	private String ignored_file;
 
-	@NotBlank
-	private String invoke_dtt;
-
-	@NotBlank
-	private String dtt_install_path;
-
-	@NotBlank
-	private String dtt_input_file;
-
-	@NotBlank
-	private String dtt_jar_file;
 	
 	private String max_history_lines;
 	

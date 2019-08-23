@@ -1,4 +1,4 @@
-package com.reddy.springbatchexample.sftp;
+package com.reddy.springbatchexample1.sftp;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -26,7 +26,7 @@ public class DownloadFileSFTP {
             Channel channel = session.openChannel("sftp");
             channel.connect();
             ChannelSftp sftpChannel = (ChannelSftp) channel;
-            sftpChannel.get("/home/sftpusers/adobeteam/workforce2/decrypt/SampleUserRecords1000_Encrypted.csv", "./testDownload.txt");  
+            sftpChannel.get("/home/sftpusers/adobeteam/workforce2/encrypt/SampleUserRecords1000.csv", "./testDownload.txt" );  
             sftpChannel.exit();
             session.disconnect();
         } catch (JSchException e) {

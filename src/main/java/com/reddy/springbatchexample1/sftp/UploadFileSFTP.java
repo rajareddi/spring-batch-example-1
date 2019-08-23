@@ -1,4 +1,4 @@
-package com.reddy.springbatchexample.sftp;
+package com.reddy.springbatchexample1.sftp;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
