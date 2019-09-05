@@ -12,12 +12,23 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class DemoSFTPConnectionManager {
-	@Autowired private DemoSFTPChannelFactory sftpChannelFactory;
+	@Autowired private SFTPChannelFactory sftpChannelFactory;
 
 	public synchronized ChannelSftp getSftpChannel() {
 		ChannelSftp sftpChannel = null;
 		try {
 			sftpChannel = sftpChannelFactory.createSftpChannel();
+		} catch (Exception e) {
+			log.warn("WARNING : Unable to create SFTP Channel. Please verify Connection properties and restart.");
+			log.debug(e.getMessage(),e);
+		}
+		return sftpChannel;
+	}
+	
+	public synchronized ChannelSftp getSftpSummaryChannel() {
+		ChannelSftp sftpChannel = null;
+		try {
+			sftpChannel = sftpChannelFactory.createSummaryChannel();
 		} catch (Exception e) {
 			log.warn("WARNING : Unable to create SFTP Channel. Please verify Connection properties and restart.");
 			log.debug(e.getMessage(),e);

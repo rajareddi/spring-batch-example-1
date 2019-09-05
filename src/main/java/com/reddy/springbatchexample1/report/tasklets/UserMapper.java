@@ -17,6 +17,10 @@ public class UserMapper implements RowMapper<User> {
 		usr.setId(result.getInt("id"));
 		usr.setDept(result.getString("address"));
 		usr.setSalary(Integer.parseInt(result.getString("salary")));
+		usr.setBbgid(result.getString("bbgid"));
+		usr.setCusip(result.getString("cusip"));
+		usr.setSedol(result.getString("sedol"));
+		usr.setIsin(result.getString("isin"));
 		return usr;
 	}
 

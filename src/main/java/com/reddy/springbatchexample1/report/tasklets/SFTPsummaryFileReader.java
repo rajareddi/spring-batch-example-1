@@ -8,49 +8,85 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
 import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.SftpException;
+import com.opencsv.CSVParser;
+import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.reddy.springbatchexample.utils.FileUtils;
 import com.reddy.springbatchexample1.model.Line;
-import com.reddy.springbatchexample1.sftp.DemoSFTPChannelFactory;
-import com.reddy.springbatchexample1.sftp.DemoSFTPClientConfig;
+import com.reddy.springbatchexample1.sftp.SFTPChannelFactory;
+import com.reddy.springbatchexample1.sftp.DemoSFTPConnectionManager;
+import com.reddy.springbatchexample1.sftp.SFTPSourceFirstClientConfig;
+import com.reddy.springbatchexample1.sftp.SFTPSummaryClientConfig;
+import com.reddy.springbatchexample1.utils.CsvReaderUtil;
+import com.reddy.springbatchexample1.utils.FileLsEntryFilter;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Slf4j
-public class SFTPFileReader implements Tasklet, StepExecutionListener {
+public class SFTPsummaryFileReader implements Tasklet, StepExecutionListener {
 
 	@Autowired
-	DemoSFTPChannelFactory demoSFTPChannelFactory;
+	DemoSFTPConnectionManager demoSFTPConnectionManager;
 	@Autowired
-	private DemoSFTPClientConfig ftpConfig;
-	private final Logger logger = LoggerFactory.getLogger(SFTPFileReader.class);
+	private SFTPSummaryClientConfig ftpConfig;
+	private final Logger logger = LoggerFactory.getLogger(SFTPsummaryFileReader.class);
 
 	ChannelSftp sftpChannel;
 	private Logger log;
-	private List<String> LineList;
+	private List<String[]> LineList;
 	private String lpwd;
 
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
+		String name = stepExecution.getStepName();
+		logger.debug("name: " + name);
 		try {
-			sftpChannel = demoSFTPChannelFactory.createSftpChannel();
+			sftpChannel = demoSFTPConnectionManager.getSftpSummaryChannel();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		logger.debug("Lines Reader initialized.");
+	}
+
+	public void createList(String directory, ChannelSftp sftpChannel, FileLsEntryFilter fileFilter, Set result)
+			throws SftpException {
+		sftpChannel.ls(directory, fileFilter);
+		Set<LsEntry> list = fileFilter.getResult();
+		for (final LsEntry file : list) {
+			if (".".equals(file.getFilename()) || "..".equals(file.getFilename())) {
+				continue;
+			}
+			if (file.getAttrs().isDir()) {
+				fileFilter.setRootDir(directory + File.separator + file.getFilename());
+				fileFilter.setResult(new LinkedHashSet<>());
+				createList(directory + File.separator + file.getFilename(), sftpChannel, fileFilter, result);
+			} else {
+				result.add(new RemotePullFile(file, directory));
+			}
+		}
 	}
 
 	@Override
@@ -81,15 +117,18 @@ public class SFTPFileReader implements Tasklet, StepExecutionListener {
 			log.info("Failed to GET {}", fileFullPath);
 			sftpChannel.exit();
 		}
-		LineList = org.apache.commons.io.FileUtils.readLines(new File(pathToCreate.toString()));
+		//LineList = org.apache.commons.io.FileUtils.readLines(new File(pathToCreate.toString()));
+		Reader reader = new FileReader(new File(pathToCreate.toString()));
+		LineList = CsvReaderUtil.readAll(reader);
 
 		return RepeatStatus.FINISHED;
 	}
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution) {
-		stepExecution.getJobExecution().getExecutionContext().put("lines", this.LineList);
+		stepExecution.getJobExecution().getExecutionContext().put("SUMMARYREPORT", this.LineList);
 		logger.debug("Lines Reader ended.");
+		demoSFTPConnectionManager.releaseChannel(sftpChannel);
 		return ExitStatus.COMPLETED;
 	}
 }

@@ -22,7 +22,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.reddy.springbatchexample1.report.tasklets.ConsoleWriter;
 import com.reddy.springbatchexample1.report.tasklets.JdbcDataReader;
 import com.reddy.springbatchexample1.report.tasklets.MargeProcessor;
-import com.reddy.springbatchexample1.report.tasklets.SFTPFileReader;
+import com.reddy.springbatchexample1.report.tasklets.SFTPRequestFileReader;
+import com.reddy.springbatchexample1.report.tasklets.SFTPsummaryFileReader;
 
 @Configuration
 @EnableBatchProcessing
@@ -66,15 +67,20 @@ public class ReportConfig {
 	}
 
 	@Bean
-	public SFTPFileReader sftpFileReader() {
-		return new SFTPFileReader();
+	public SFTPRequestFileReader sftpFileReader() {
+		return new SFTPRequestFileReader();
+	}
+
+	@Bean
+	public SFTPsummaryFileReader sftpSummaryReader() {
+		return new SFTPsummaryFileReader();
 	}
 
 	@Bean
 	@Qualifier(value = "reportGeneretor")
 	public Job reportJob() throws Exception {
-		return new JobBuilderFactory(this.jobRepository()).get("reportGeneretor").start(readSFTPFIle())
-				.next(readDataFromDB()).next(mergeData()).next(writeSFTpFile()).build();
+		return new JobBuilderFactory(this.jobRepository()).get("reportGeneretor").start(readSFTPRequestFIle())
+				.next(readDataFromDB()).next(readSFTPSummaryFIle()).next(mergeData()).next(writeSFTpFile()).build();
 	}
 
 	private Step writeSFTpFile() throws Exception {
@@ -107,9 +113,14 @@ public class ReportConfig {
 		return jJdbcDataReader;
 	}
 
-	private Step readSFTPFIle() throws Exception {
-		return new StepBuilderFactory(this.jobRepository(), transactionManager()).get("readSFTPFile")
+	private Step readSFTPRequestFIle() throws Exception {
+		return new StepBuilderFactory(this.jobRepository(), transactionManager()).get("readSFTPRequestFIle")
 				.tasklet(sftpFileReader()).build();
+	}
+
+	private Step readSFTPSummaryFIle() throws Exception {
+		return new StepBuilderFactory(this.jobRepository(), transactionManager()).get("readSFTPSummaryFIle")
+				.tasklet(sftpSummaryReader()).build();
 	}
 
 }

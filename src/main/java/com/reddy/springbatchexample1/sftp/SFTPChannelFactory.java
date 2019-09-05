@@ -15,14 +15,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class DemoSFTPChannelFactory {
+public class SFTPChannelFactory {
 
 	private static final String SFTP = "sftp";
 	private JSch privateKeyJsch = null;
 	private JSch passwordJsch = null;
 	@Autowired
-	private DemoSFTPClientConfig ftpConfig;
+	private SFTPSourceFirstClientConfig ftpConfig;
 
+	
+	@Autowired
+	private SFTPSummaryClientConfig summaryConfig;
 	@PostConstruct
 	public void initSession() {
 		privateKeyJsch = new JSch();
@@ -39,12 +42,30 @@ public class DemoSFTPChannelFactory {
 		return null;
 	}
 
+	
+	public ChannelSftp createSummaryChannel() throws Exception {
+		String authType = summaryConfig.getAuth_type();
+		if ("password".equalsIgnoreCase(authType)) {
+			return createSummaryPasswordChannel();
+		} else if ("privateKey".equalsIgnoreCase(authType)) {
+			return createSummaryPrivateKeyChannel();
+		}
+		return null;
+	}
 	private ChannelSftp createPasswordChannel() throws Exception {
 		return createChannel(createPasswordSession());
 	}
 
+	
+	private ChannelSftp createSummaryPasswordChannel() throws Exception {
+		return createChannel(createSummaryPasswordSession());
+	}
 	private ChannelSftp createPrivateKeyChannel() throws Exception {
 		return createChannel(createPrivateKeySession());
+	}
+	
+	private ChannelSftp createSummaryPrivateKeyChannel() throws Exception {
+		return createChannel(createSummaryPrivateKeySession());
 	}
 
 	private Session createPrivateKeySession() throws Exception {
@@ -62,6 +83,22 @@ public class DemoSFTPChannelFactory {
 			throw new Exception(e);
 		}
 	}
+	
+	private Session createSummaryPrivateKeySession() throws Exception {
+		try {
+			String username = summaryConfig.getUser();
+			String host = summaryConfig.getHost();
+			byte[] privateKey = getPrivateKey(summaryConfig.getKey_string());
+			int port = getPortInt(summaryConfig.getPort());
+			privateKeyJsch.addIdentity("ccftpKey", privateKey, null, null);
+			Session session = privateKeyJsch.getSession(username, host, port);
+			session.setConfig("StrictHostKeyChecking", "no");
+			session.connect(10000);
+			return session;
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
 
 	private Session createPasswordSession() throws Exception {
 		try {
@@ -69,6 +106,22 @@ public class DemoSFTPChannelFactory {
 			String password = ftpConfig.getPassword();// .BakedInKey.decrypt(ftpConfig.getPassword());
 			String host = ftpConfig.getHost();
 			int port = getPortInt(ftpConfig.getPort());
+			Session session = passwordJsch.getSession(username, host, port);
+			session.setPassword(password);
+			session.setConfig("StrictHostKeyChecking", "no");
+			session.connect(10000);
+			return session;
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+	
+	private Session createSummaryPasswordSession() throws Exception {
+		try {
+			String username = summaryConfig.getUser();
+			String password = summaryConfig.getPassword();
+			String host = summaryConfig.getHost();
+			int port = getPortInt(summaryConfig.getPort());
 			Session session = passwordJsch.getSession(username, host, port);
 			session.setPassword(password);
 			session.setConfig("StrictHostKeyChecking", "no");
