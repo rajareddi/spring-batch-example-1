@@ -23,33 +23,48 @@ public class MargeProcessor implements Tasklet, StepExecutionListener {
 
 	private final Logger logger = LoggerFactory.getLogger(MargeProcessor.class);
 
-	private List<String> lines;
+	private List<String[]> requestData;
 	List<User> result;
 
-	List<String> outPut = new ArrayList<>();
+	List<String[]> summaryData;
+	List<User> dbData;
 
+	List<String[]> outPut = new ArrayList<>();
+
+	// Pending
 	@Override
 	public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
 		outPut = new ArrayList<>();
-		for (String line : lines) {
-			outPut.add(line.replace("002", "OOOOO2"));
+		for (String[] line : requestData) {
+			System.out.println(line.toString());
+			outPut.add(line);
 		}
+
+		for (String[] line : summaryData) {
+			System.out.println(line);
+		}
+		outPut = requestData;
 		return RepeatStatus.FINISHED;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
+
 		ExecutionContext executionContext = stepExecution.getJobExecution().getExecutionContext();
-		this.lines = (List<String>) executionContext.get("lines");
-		this.result = (List<User>) executionContext.get("userList");
+		String name = stepExecution.getStepName();
+		logger.debug("name: " + name);
+		this.requestData = (List<String[]>) executionContext.get("REQUESTSOURCE");
+		this.summaryData = (List<String[]>) executionContext.get("SUMMARYREPORT");
+		this.dbData = (List<User>) executionContext.get("DBDATA");
+
 		logger.debug("Lines Processor initialized.");
 	}
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution) {
 		logger.debug("Lines Processor ended.");
-		stepExecution.getJobExecution().getExecutionContext().put("outPutList", this.outPut);
+		stepExecution.getJobExecution().getExecutionContext().put("RESPONSE", this.outPut);
 		return ExitStatus.COMPLETED;
 	}
 }

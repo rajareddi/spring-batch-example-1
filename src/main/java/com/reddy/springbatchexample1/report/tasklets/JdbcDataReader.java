@@ -51,7 +51,8 @@ public class JdbcDataReader implements Tasklet, StepExecutionListener {
 
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
-
+		String name = stepExecution.getStepName();
+		logger.debug("name: " + name);
 		logger.debug("JdbcDataReader initialized.");
 	}
 
@@ -66,7 +67,7 @@ public class JdbcDataReader implements Tasklet, StepExecutionListener {
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution) {
-		stepExecution.getJobExecution().getExecutionContext().put("userList", this.result);
+		stepExecution.getJobExecution().getExecutionContext().put("DBDATA", this.result);
 		logger.debug("Lines Reader ended.");
 		return ExitStatus.COMPLETED;
 	}

@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class DemoSFTPChannelFactory {
+public class SFTPSummeryChannelFactory {
 
 	private static final String SFTP = "sftp";
 	private JSch privateKeyJsch = null;
 	private JSch passwordJsch = null;
 	@Autowired
-	private DemoSFTPClientConfig ftpConfig;
+	private SFTPSourceFirstClientConfig ftpConfig;
 
 	@PostConstruct
 	public void initSession() {

@@ -11,8 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class DemoSFTPConnectionManager {
-	@Autowired private DemoSFTPChannelFactory sftpChannelFactory;
+public class SFTPConnectionManager {
+	@Autowired
+	private SFTPChannelFactory sftpChannelFactory;
 
 	public synchronized ChannelSftp getSftpChannel() {
 		ChannelSftp sftpChannel = null;
@@ -20,11 +21,22 @@ public class DemoSFTPConnectionManager {
 			sftpChannel = sftpChannelFactory.createSftpChannel();
 		} catch (Exception e) {
 			log.warn("WARNING : Unable to create SFTP Channel. Please verify Connection properties and restart.");
-			log.debug(e.getMessage(),e);
+			log.debug(e.getMessage(), e);
 		}
 		return sftpChannel;
 	}
-	
+
+	public synchronized ChannelSftp getSftpChannel(SftpClinetConfig sftpClinetConfig) {
+		ChannelSftp sftpChannel = null;
+		try {
+			sftpChannel = sftpChannelFactory.createSftpChannel(sftpClinetConfig);
+		} catch (Exception e) {
+			log.warn("WARNING : Unable to create SFTP Channel. Please verify Connection properties and restart.");
+			log.debug(e.getMessage(), e);
+		}
+		return sftpChannel;
+	}
+
 	public synchronized void releaseChannel(ChannelSftp sftpChannel) {
 		try {
 			if (sftpChannel != null) {
@@ -32,13 +44,14 @@ public class DemoSFTPConnectionManager {
 				if (!sftpChannel.isClosed()) {
 					sftpChannel.quit();
 				}
-				if ( session != null && session.isConnected() ) {
+				if (session != null && session.isConnected()) {
 					session.disconnect();
 				}
 			}
 		} catch (JSchException e) {
-			log.warn("WARNING : Unable release Channel / Session. System performance may degrade, restart if required. ");
-			log.debug(e.getMessage(),e);
+			log.warn(
+					"WARNING : Unable release Channel / Session. System performance may degrade, restart if required. ");
+			log.debug(e.getMessage(), e);
 		}
 	}
 }
