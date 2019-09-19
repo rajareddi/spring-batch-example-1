@@ -28,6 +28,11 @@ public class MargeProcessor implements Tasklet, StepExecutionListener {
 
 	List<String[]> summaryData;
 	List<User> dbData;
+<<<<<<< HEAD
+=======
+
+	List<String[]> outPut = new ArrayList<>();
+>>>>>>> branch 'master' of https://github.com/rajareddi/spring-batch-example-1.git
 
 	List<String[]> outPut = new ArrayList<>();
 
@@ -57,7 +62,11 @@ public class MargeProcessor implements Tasklet, StepExecutionListener {
 		this.requestData = (List<String[]>) executionContext.get("REQUESTSOURCE");
 		this.summaryData = (List<String[]>) executionContext.get("SUMMARYREPORT");
 		this.dbData = (List<User>) executionContext.get("DBDATA");
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> branch 'master' of https://github.com/rajareddi/spring-batch-example-1.git
 		logger.debug("Lines Processor initialized.");
 	}
 
