@@ -1,5 +1,8 @@
 package com.reddy.springbatchexample1.report.tasklets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -11,13 +14,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 
-import com.reddy.springbatchexample1.model.Line;
 import com.reddy.springbatchexample1.model.User;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MargeProcessor implements Tasklet, StepExecutionListener {
 
@@ -28,11 +25,6 @@ public class MargeProcessor implements Tasklet, StepExecutionListener {
 
 	List<String[]> summaryData;
 	List<User> dbData;
-<<<<<<< HEAD
-=======
-
-	List<String[]> outPut = new ArrayList<>();
->>>>>>> branch 'master' of https://github.com/rajareddi/spring-batch-example-1.git
 
 	List<String[]> outPut = new ArrayList<>();
 
@@ -62,11 +54,7 @@ public class MargeProcessor implements Tasklet, StepExecutionListener {
 		this.requestData = (List<String[]>) executionContext.get("REQUESTSOURCE");
 		this.summaryData = (List<String[]>) executionContext.get("SUMMARYREPORT");
 		this.dbData = (List<User>) executionContext.get("DBDATA");
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> branch 'master' of https://github.com/rajareddi/spring-batch-example-1.git
 		logger.debug("Lines Processor initialized.");
 	}
 

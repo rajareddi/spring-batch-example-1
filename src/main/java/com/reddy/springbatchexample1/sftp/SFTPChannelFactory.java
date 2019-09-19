@@ -23,7 +23,6 @@ public class SFTPChannelFactory {
 	@Autowired
 	private SFTPSourceFirstClientConfig ftpConfig;
 
-<<<<<<< HEAD
 	@PostConstruct
 	public void initSession() {
 		privateKeyJsch = new JSch();
@@ -120,107 +119,6 @@ public class SFTPChannelFactory {
 			String password = ftpConfig.getPassword();
 			String host = ftpConfig.getHost();
 			int port = getPortInt(ftpConfig.getPort());
-=======
-	
-	@Autowired
-	private SFTPSummaryClientConfig summaryConfig;
-	@PostConstruct
-	public void initSession() {
-		privateKeyJsch = new JSch();
-		passwordJsch = new JSch();
-	}
-
-	public ChannelSftp createSftpChannel() throws Exception {
-		String authType = ftpConfig.getAuth_type();
-		if ("password".equalsIgnoreCase(authType)) {
-			return createPasswordChannel();
-		} else if ("privateKey".equalsIgnoreCase(authType)) {
-			return createPrivateKeyChannel();
-		}
-		return null;
-	}
-
-	
-	public ChannelSftp createSummaryChannel() throws Exception {
-		String authType = summaryConfig.getAuth_type();
-		if ("password".equalsIgnoreCase(authType)) {
-			return createSummaryPasswordChannel();
-		} else if ("privateKey".equalsIgnoreCase(authType)) {
-			return createSummaryPrivateKeyChannel();
-		}
-		return null;
-	}
-	private ChannelSftp createPasswordChannel() throws Exception {
-		return createChannel(createPasswordSession());
-	}
-
-	
-	private ChannelSftp createSummaryPasswordChannel() throws Exception {
-		return createChannel(createSummaryPasswordSession());
-	}
-	private ChannelSftp createPrivateKeyChannel() throws Exception {
-		return createChannel(createPrivateKeySession());
-	}
-	
-	private ChannelSftp createSummaryPrivateKeyChannel() throws Exception {
-		return createChannel(createSummaryPrivateKeySession());
-	}
-
-	private Session createPrivateKeySession() throws Exception {
-		try {
-			String username = ftpConfig.getUser();
-			String host = ftpConfig.getHost();
-			byte[] privateKey = getPrivateKey(ftpConfig.getKey_string());
-			int port = getPortInt(ftpConfig.getPort());
-			privateKeyJsch.addIdentity("ccftpKey", privateKey, null, null);
-			Session session = privateKeyJsch.getSession(username, host, port);
-			session.setConfig("StrictHostKeyChecking", "no");
-			session.connect(10000);
-			return session;
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
-	}
-	
-	private Session createSummaryPrivateKeySession() throws Exception {
-		try {
-			String username = summaryConfig.getUser();
-			String host = summaryConfig.getHost();
-			byte[] privateKey = getPrivateKey(summaryConfig.getKey_string());
-			int port = getPortInt(summaryConfig.getPort());
-			privateKeyJsch.addIdentity("ccftpKey", privateKey, null, null);
-			Session session = privateKeyJsch.getSession(username, host, port);
-			session.setConfig("StrictHostKeyChecking", "no");
-			session.connect(10000);
-			return session;
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
-	}
-
-	private Session createPasswordSession() throws Exception {
-		try {
-			String username = ftpConfig.getUser();
-			String password = ftpConfig.getPassword();// .BakedInKey.decrypt(ftpConfig.getPassword());
-			String host = ftpConfig.getHost();
-			int port = getPortInt(ftpConfig.getPort());
-			Session session = passwordJsch.getSession(username, host, port);
-			session.setPassword(password);
-			session.setConfig("StrictHostKeyChecking", "no");
-			session.connect(10000);
-			return session;
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
-	}
-	
-	private Session createSummaryPasswordSession() throws Exception {
-		try {
-			String username = summaryConfig.getUser();
-			String password = summaryConfig.getPassword();
-			String host = summaryConfig.getHost();
-			int port = getPortInt(summaryConfig.getPort());
->>>>>>> branch 'master' of https://github.com/rajareddi/spring-batch-example-1.git
 			Session session = passwordJsch.getSession(username, host, port);
 			session.setPassword(password);
 			session.setConfig("StrictHostKeyChecking", "no");

@@ -9,23 +9,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-<<<<<<< HEAD
 @Component
 @ConfigurationProperties("sftp.inbound.source2")
 @Setter
 @Getter
 @Validated
 public class SFTPSummaryClientConfig extends SftpClinetConfig {
-=======
-@SuppressWarnings("deprecation")
-@Slf4j
-@Component
-@ConfigurationProperties("sftp.inbound.source2")
-@Setter
-@Getter
-@Validated
-public class SFTPSummaryClientConfig  {
->>>>>>> branch 'master' of https://github.com/rajareddi/spring-batch-example-1.git
 
 	@NotBlank
 	private String host;

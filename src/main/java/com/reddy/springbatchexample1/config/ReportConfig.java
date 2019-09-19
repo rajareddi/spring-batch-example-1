@@ -79,7 +79,7 @@ public class ReportConfig {
 	@Bean
 	@Qualifier(value = "reportGeneretor")
 	public Job reportJob() throws Exception {
-<<<<<<< HEAD
+
 		return new JobBuilderFactory(this.jobRepository()).get("reportGeneretor")
 				.start(readSFTPRequestFIle())
 				.next(readDataFromDB())
@@ -87,10 +87,7 @@ public class ReportConfig {
 				.next(mergeData())
 				.next(writeSFTpFile())
 				.build();
-=======
-		return new JobBuilderFactory(this.jobRepository()).get("reportGeneretor").start(readSFTPRequestFIle())
-				.next(readDataFromDB()).next(readSFTPSummaryFIle()).next(mergeData()).next(writeSFTpFile()).build();
->>>>>>> branch 'master' of https://github.com/rajareddi/spring-batch-example-1.git
+
 	}
 
 	private Step writeSFTpFile() throws Exception {
