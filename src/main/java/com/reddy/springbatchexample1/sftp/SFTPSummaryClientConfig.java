@@ -33,11 +33,11 @@ public class SFTPSummaryClientConfig extends SftpClinetConfig {
 	private String key_string;
 	private String key_location;
 
-	@NotBlank
+	/*@NotBlank
 	private String poll_enabled;
 
 	@NotBlank
-	private String poll_interval;
+	private String poll_interval;*/
 
 	@NotBlank
 	private String remote_src_dir;

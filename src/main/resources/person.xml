@@ -1,0 +1,22 @@
+<beanio xmlns="http://www.beanio.org/2012/03">
+ <stream name="persons" format="csv">
+  <parser>
+   <property name="delimiter" value="," />
+   <property name="lineSeparator" value="\n" />
+   <property name="whitespaceAllowed" value="true" />
+  </parser>
+   <typeHandler name="personTypeHandler" class="com.reddy.springbatchexample1.utils.PersonTypeHandler"/>
+  <record name="header" class="map" maxOccurs="1">
+   <!-- 'rid' indicates this field is used to identify the record -->
+   <field name="recordType" rid="true" literal="H" />
+   <!-- 'format' can be used to provide Date and Number formats -->
+   <field name="fileDate" type="date" format="yyyy-MM-dd" />
+  </record>
+  <record name="detail" minOccurs="0" maxOccurs="unbounded"
+   class="com.reddy.springbatchexample1.utils.Person">
+   <field name="firstName" />
+   <field name="surname" />
+   <field name="type" typeHandler="personTypeHandler" type="com.reddy.springbatchexample1.utils.PersonType" />
+  </record>
+ </stream>
+</beanio>

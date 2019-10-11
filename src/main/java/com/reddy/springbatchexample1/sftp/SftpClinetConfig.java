@@ -23,9 +23,9 @@ public abstract class SftpClinetConfig {
 	private String key_string;
 	private String key_location;
 
-	private String poll_enabled;
+/*	private String poll_enabled;
 
-	private String poll_interval;
+	private String poll_interval;*/
 
 	private String remote_src_dir;
 
