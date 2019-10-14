@@ -22,7 +22,7 @@ public class BeanIoReader {
 		InputStream in = BeanIoReader.class.getClass().getResourceAsStream("/data/TRD_NPOSREQ_CA_YYYYMMDDHHMMSS.txt");
 		BeanReader reader = factory.createReader("record", new InputStreamReader(in));
 		Object record = null;
-		List<RequestEntity> persons = new ArrayList<RequestEntity>();
+		List<RequestEntity> requestEntities = new ArrayList<RequestEntity>();
 		// read records from "input.csv"
 		while ((record = reader.read()) != null) {
 
@@ -31,11 +31,16 @@ public class BeanIoReader {
 				FileObjectWrapper header = (FileObjectWrapper) record;
 				System.out.println(header.getHeaderRecords().toString());
 				System.out.println(header.getRequestEntity().toString());
+				requestEntities.addAll(header.getRequestEntity());
 
 			}
 		}
 
-		System.out.println(persons);
+		for (RequestEntity requestEntity : requestEntities) {
+			System.out.println(requestEntity.getEntity_id());
+			System.out.println(requestEntity.getRequest_date());
+			
+		}
 	}
 
 	public static void main(String[] args) {

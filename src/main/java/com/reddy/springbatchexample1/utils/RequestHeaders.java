@@ -30,4 +30,52 @@ public class RequestHeaders {
 		return builder.toString();
 	}
 
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getGenarationDateAndTIme() {
+		return genarationDateAndTIme;
+	}
+
+	public void setGenarationDateAndTIme(String genarationDateAndTIme) {
+		this.genarationDateAndTIme = genarationDateAndTIme;
+	}
+
+	public String getBusinessDate() {
+		return businessDate;
+	}
+
+	public void setBusinessDate(String businessDate) {
+		this.businessDate = businessDate;
+	}
+
+	public String getRecordNumber() {
+		return recordNumber;
+	}
+
+	public void setRecordNumber(String recordNumber) {
+		this.recordNumber = recordNumber;
+	}
+
+	public String getOperationalUnit() {
+		return operationalUnit;
+	}
+
+	public void setOperationalUnit(String operationalUnit) {
+		this.operationalUnit = operationalUnit;
+	}
+
+	public String getSenderID() {
+		return senderID;
+	}
+
+	public void setSenderID(String senderID) {
+		this.senderID = senderID;
+	}
+
 }
